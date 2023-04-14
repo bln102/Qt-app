@@ -33,10 +33,12 @@ class FormWidget(QWidget):
             self.layout.addWidget(self.entry1,1,1)
 
             self.btn3 = QPushButton("btn3")
+            self.btn3.clicked.connect(self.handle_click)
             self.layout.addWidget(self.btn3,1,2)
+
 
 
             self.setLayout(self.layout)
 
-    def handle_click():
-         print("You clicked here !!")
+    def handle_click(self):
+         print("You clicked here !! :", self.entry1.text())
