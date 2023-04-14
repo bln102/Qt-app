@@ -1,11 +1,12 @@
-from PySide6.QtWidgets import QMainWindow, QWidget, QGridLayout, QLineEdit, QPushButton
-
+from PySide6.QtWidgets import QMainWindow, QWidget, QGridLayout, QLineEdit, QPushButton, QToolBar,QLabel, QStatusBar
+from PySide6.QtCore import QSize
+from PySide6.QtGui import QAction, QIcon
 
 class MyApp(QMainWindow):
     def __init__(self, app):
         super().__init__()
         self.app = app
-        self.setWindowTitle("Main app")
+        self.setWindowTitle("KG to Pounds converter")
         # Menubar and menus
         menu_bar = self.menuBar()
         file_menu = menu_bar.addMenu("&File")
@@ -22,23 +23,50 @@ class FormWidget(QWidget):
             super(FormWidget, self).__init__(parent)
             self.layout = QGridLayout(self)
 
-            self.btn1 = QPushButton("btn1")
-            self.btn2 = QPushButton("btn2")
+            #Elements
+            self.lbl_kg = QLabel("Kilograms")
+            self.entryKG = QLineEdit("0.0")
+            self.btn1 = QPushButton("Convert")
 
-            # grid = QGridLayout()  
-            self.layout.addWidget(self.btn1,0,0)
-            self.layout.addWidget(self.btn2,0,1)
+            self.lbl_pd = QLabel("Pounds")
+            self.entryPD = QLineEdit("0.0")
+            self.btn2 = QPushButton("Convert")
+            
+            # Grid layout
+            self.layout.addWidget(self.lbl_kg,0,0)
+            self.layout.addWidget(self.entryKG,0,1)
+            self.layout.addWidget(self.btn1,0,2)
 
-            self.entry1 = QLineEdit("")
-            self.layout.addWidget(self.entry1,1,1)
+            self.layout.addWidget(self.lbl_pd,1,0)
+            self.layout.addWidget(self.entryPD,1,1)
+            self.layout.addWidget(self.btn2,1,2)
 
-            self.btn3 = QPushButton("btn3")
-            self.btn3.clicked.connect(self.handle_click)
-            self.layout.addWidget(self.btn3,1,2)
-
+            # Functions
+            self.btn1.clicked.connect(self.kgToPd)
+            self.btn2.clicked.connect(self.PdToKg)
 
 
             self.setLayout(self.layout)
+            
 
-    def handle_click(self):
-         print("You clicked here !! :", self.entry1.text())
+            
+
+    def kgToPd(self):
+        try:
+            pd = self.entryKG.text()
+            pd = round(float(pd) * 2.205, 3)
+            self.entryPD.setText(str(pd))
+        except ValueError:
+            print(ValueError)
+            self.entryKG.setText("0.0")
+            self.entryPD.setText("0.0")
+        
+    def PdToKg(self):
+        try:
+            kg = self.entryPD.text()
+            kg = round(float(kg) / 2.205, 3)
+            self.entryKG.setText(str(kg))
+        except ValueError:
+            print(ValueError)
+            self.entryKG.setText("0.0")
+            self.entryPD.setText("0.0")
